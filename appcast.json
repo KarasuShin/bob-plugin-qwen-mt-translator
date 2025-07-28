@@ -1,4 +1,12 @@
 {
   "identifier": "karasu.qwen-mt.translator",
-  "versions": []
+  "versions": [
+    {
+      "version": "1.0.0",
+      "desc": "initial release",
+      "sha256": "f4cbaee47ba1ce530834049c5e5308d4d32950726c7aa5a97fca39708fb8203a",
+      "url": "https://github.com/karasushin/bob-plugin-qwen-mt-translator/releases/download/v1.0.0/qwen-mt-translator-1.0.0.bobplugin",
+      "minBobVersion": "1.8.0"
+    }
+  ]
 }
