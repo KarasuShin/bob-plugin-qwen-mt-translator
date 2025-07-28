@@ -1,0 +1,65 @@
+{
+  "appcast": "https://raw.githubusercontent.com/KarasuShin/bob-plugin-qwen-mt-translator/main/appcast.json",
+  "author": "karasu <karasu.shing@gmail.com>",
+  "category": "translate",
+  "homepage": "https://github.com/KarasuShin/bob-plugin-qwen-mt-translator",
+  "identifier": "karasu.qwen-mt.translator",
+  "minBobVersion": "1.8.0",
+  "name": "Qwen MT",
+  "options": [
+    {
+      "defaultValue": "qwen-mt-turbo",
+      "identifier": "model",
+      "menuValues": [
+        {
+          "title": "Qwen MT Turbo",
+          "value": "qwen-mt-turbo"
+        },
+        {
+          "title": "Qwen MT Plus",
+          "value": "qwen-mt-plus"
+        }
+      ],
+      "title": "Model",
+      "type": "menu"
+    },
+    {
+      "identifier": "apiUrl",
+      "textConfig": {
+        "height": "55",
+        "placeholderText": "https://dashscope.aliyuncs.com/compatible-mode/v1",
+        "type": "visible"
+      },
+      "title": "API URL",
+      "type": "text"
+    },
+    {
+      "identifier": "apiKey",
+      "textConfig": {
+        "height": "40",
+        "placeholderText": "sk-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+        "type": "secure"
+      },
+      "title": "API KEY",
+      "type": "text"
+    },
+    {
+      "defaultValue": "enable",
+      "identifier": "stream",
+      "menuValues": [
+        {
+          "title": "Enable",
+          "value": "enable"
+        },
+        {
+          "title": "Disable",
+          "value": "disable"
+        }
+      ],
+      "title": "Stream Output",
+      "type": "menu"
+    }
+  ],
+  "summary": "AI-powered translator",
+  "version": "1.0.0"
+}

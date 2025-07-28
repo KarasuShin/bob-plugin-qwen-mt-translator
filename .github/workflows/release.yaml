@@ -1,0 +1,88 @@
+name: Bump Version and Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      message:
+        description: Tag message
+        required: true
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write
+      packages: write
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Git
+        run: |
+          git config --global user.name 'GitHub Actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+
+      - name: Get version from package.json
+        id: get_version
+        run: |
+          VERSION_NUMBER=$(node -p "require('./package.json').version")
+          VERSION="v$VERSION_NUMBER"
+          echo "VERSION=$VERSION" >> $GITHUB_ENV
+          echo "VERSION_NUMBER=$VERSION_NUMBER" >> $GITHUB_ENV
+          echo "Package version: $VERSION_NUMBER"
+          echo "Tag version: $VERSION"
+
+      - name: Update info.json
+        run: |
+          OLD_VERSION=$(grep '"version":' assets/info.json | awk -F\" '{print $4}')
+          sed -i "s/$OLD_VERSION/${{ env.VERSION_NUMBER }}/" assets/info.json
+
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .node-version
+          cache: pnpm
+
+      - run: pnpm install
+      - run: pnpm run build
+
+      - name: Package plugin
+        run: pnpm run pack
+
+      - name: Update appcast.json
+        env:
+          VERSION_NUMBER: ${{ env.VERSION_NUMBER }}
+          MESSAGE: ${{ github.event.inputs.message }}
+        run: |
+          node scripts/update.js "$MESSAGE"
+
+      - name: Commit files
+        run: |
+          git commit -a -m 'chore: update appcast.json and info.json'
+
+      - name: Create tag
+        env:
+          VERSION: ${{ env.VERSION }}
+          MESSAGE: ${{ github.event.inputs.message }}
+        run: |
+          git tag -a "$VERSION" -m "$MESSAGE"
+
+      - name: Push changes
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ github.token }}
+          tags: true
+
+      - name: Upload binaries to release
+        uses: svenstaro/upload-release-action@v2
+        with:
+          release_name: ${{ env.VERSION }}
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: qwen-mt-translator-${{ env.VERSION_NUMBER }}.bobplugin
+          asset_name: qwen-mt-translator-${{ env.VERSION_NUMBER }}.bobplugin
+          tag: ${{ env.VERSION }}
+          overwrite: true
+          body: ${{ github.event.inputs.message }}

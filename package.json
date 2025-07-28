@@ -1,0 +1,26 @@
+{
+  "name": "bob-plugin-qwen-mt-translator",
+  "type": "module",
+  "version": "1.0.0",
+  "packageManager": "pnpm@10.13.1",
+  "description": "A Bob plugin for text translation using the Qwen-MT model",
+  "author": "Karasu <karasu.shing@gmail.com>",
+  "license": "MIT",
+  "keywords": [
+    "bob-plugin",
+    "Qwen-MT"
+  ],
+  "scripts": {
+    "build": "tsdown",
+    "pack": "node scripts/pack.js"
+  },
+  "devDependencies": {
+    "@antfu/eslint-config": "^5.0.0",
+    "@bob-translate/types": "^1.1.0",
+    "@types/node": "^24.1.0",
+    "archiver": "^7.0.1",
+    "eslint": "^9.31.0",
+    "tsdown": "^0.13.0",
+    "typescript": "^5.8.3"
+  }
+}
